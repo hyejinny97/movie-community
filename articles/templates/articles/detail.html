@@ -2,27 +2,67 @@
 {% load django_bootstrap5 %}
 
 {% block body %}
-<h1>게시글</h1>
-{{ article.title }}
-{% if article.image %}
-<img src="{{ article.image.url }}" alt="">
-{% endif %}
-{% if article.thumbnail %}
-<img src="{{ article.thumbnail.url }}" alt="">
-{% endif %}
+  <h1 class='my-3 text-center'>게시글</h1>
 
-<form action="{% url 'articles:delete' article.pk %}" method="POST">
-  {% csrf_token %}
-  <input type="submit" value="삭제">
-</form>
+  {% comment %} 메시지 {% endcomment %}
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      {% if message.tag == warning %}
+      <li class="alert alert-warning">{{ message }}</li>
+      {% endif %}
+      {% endfor %}
+  </ul>
+  {% endif %}
 
-<form action="{% url 'articles:comments' article.pk %}" method="POST">
-  {% csrf_token %}
-  {% bootstrap_form comment %}
-  <input type="submit" value="댓글작성">
-</form>
-<p>댓글 개수 : {{ article.comment_set.all|length }}</p>
-{% for comment in article.comment_set.all %}
-<p>{{ comment.content }} {{ comment.created_at }}</p>
-{% endfor %}
+  {% comment %} 게시글 {% endcomment %}
+  {% comment %} 글 제목 {% endcomment %}
+  <section>
+    <div class='detail-title-div' style='height:300px;'>
+      {% if article.image %}
+      <img src="{{ article.image.url }}" alt="" class='w-100' style='height:300px; object-fit:cover; filter:brightness(0.6);'>
+      {% endif %}
+      <div class='detail-title'>
+        <p>{{ article.movie_name }} | {{ article.updated_at|date:'Y.m.d' }}</p>
+        <h3>{{ article.title }}</h3>
+      </div>
+    </div>
+    
+    {% if request.user == article.writer %}
+    <a class="btn btn-primary" href="{% url 'articles:update' article.pk %}" role="button">수정</a>
+    <form action="{% url 'articles:delete' article.pk %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="삭제">
+    </form>
+    {% endif %}
+  </section>
+
+  {% comment %} 글 내용 {% endcomment %}
+  <section class='container' style='width:600px;'>
+
+    <hr>
+  
+    {% comment %} 댓글 폼 {% endcomment %}
+    {% if request.user.is_authenticated %}
+    <form action="{% url 'articles:comments' article.pk %}" method="POST">
+      {% csrf_token %}
+      {% bootstrap_form comment %}
+      <input type="submit" value="댓글작성">
+    </form>
+    {% endif %}
+  
+    {% comment %} 댓글 {% endcomment %}
+    <p>댓글 개수 :
+      {{ article.comment_set.all|length }}</p>
+    {% for comment in article.comment_set.all %}
+      <p>{{ comment.content }}</p>
+      <p>{{ comment.created_at }}</p>
+      {% if request.user == comment.writer %}
+      <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="삭제">
+      </form>
+      {% endif %}
+    {% endfor %}
+  </section>
 {% endblock body %}

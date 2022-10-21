@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from .forms import CustomUserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
-
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -13,7 +13,8 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('accounts:signup')
+            login(request, form.get_user())
+            return redirect('articles:index')
     else:
         form = CustomUserCreationForm()
     context = {
@@ -26,10 +27,11 @@ def signin(request):
 
     if form.is_valid():
         login(request, form.get_user())
-        return redirect('accounts:index')
+        return redirect('articles:index')
 
     return render(request, 'accounts/signin.html', {"form": form})
 
+@login_required
 def signout(request):
     logout(request)
-    return redirect("accounts:index")
+    return redirect('articles:index')
