@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Article
-from .forms import ArticleForm
+from .forms import ArticleForm, CommentForm
 
 # Create your views here.
 
@@ -35,9 +35,11 @@ def article_create(request):
 # 게시글 상세 페이지
 def detail(request, article_pk):
     article = Article.objects.get(pk=article_pk)
+    comment = CommentForm()
 
     context = {
         'article': article,
+        'comment': comment,
     }
 
     return render(request, 'articles/detail.html', context)
@@ -62,3 +64,14 @@ def delete(request, article_pk):
     article.delete()
     return redirect('articles:index')
 
+# comments
+def comments(request, article_pk):
+    form = CommentForm(request.POST)
+
+    if form.is_valid():
+        temp = form.save(commit=False)
+        temp.writer = request.user
+        temp.review_id = article_pk
+        temp.save()
+
+        return redirect('articles:detail', article_pk)

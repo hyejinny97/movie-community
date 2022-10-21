@@ -19,3 +19,9 @@ class Article(models.Model):
                                          format='JPEG',
                                          options={'quality': 100})
     writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+class Comment(models.Model):
+    review = models.ForeignKey("Article", on_delete=models.CASCADE)
+    content = models.CharField(max_length=130)
+    created_at = models.DateTimeField(auto_now_add=True)
+    writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

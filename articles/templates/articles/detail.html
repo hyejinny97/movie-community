@@ -1,18 +1,28 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 
 {% block body %}
-  <h1>게시글</h1>
-  {{ article.title }}
-  {% if article.image %}
-    <img src="{{ article.image.url }}" alt="">
-  {% endif %}
-  {% if article.thumbnail %}
-    <img src="{{ article.thumbnail.url }}" alt="">
-  {% endif %}
+<h1>게시글</h1>
+{{ article.title }}
+{% if article.image %}
+<img src="{{ article.image.url }}" alt="">
+{% endif %}
+{% if article.thumbnail %}
+<img src="{{ article.thumbnail.url }}" alt="">
+{% endif %}
 
-  <form action="{% url 'articles:delete' article.pk %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="삭제">
-  </form>
+<form action="{% url 'articles:delete' article.pk %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="삭제">
+</form>
 
+<form action="{% url 'articles:comments' article.pk %}" method="POST">
+  {% csrf_token %}
+  {% bootstrap_form comment %}
+  <input type="submit" value="댓글작성">
+</form>
+<p>댓글 개수 : {{ article.comment_set.all|length }}</p>
+{% for comment in article.comment_set.all %}
+<p>{{ comment.content }} {{ comment.created_at }}</p>
+{% endfor %}
 {% endblock body %}
