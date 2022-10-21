@@ -15,7 +15,7 @@ class Article(models.Model):
     image = models.ImageField(blank=True, upload_to='images/')
     thumbnail = ProcessedImageField(upload_to='thumbnails/',
                                          blank=True,
-                                         processors=[Thumbnail(100, 50)],
+                                         processors=[Thumbnail(300, 150)],
                                          format='JPEG',
                                          options={'quality': 100})
     writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
