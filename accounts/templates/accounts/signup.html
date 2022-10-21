@@ -2,14 +2,16 @@
 {% load django_bootstrap5 %}
 
 {% block body %}
-  <h1>회원가입</h1>
+<h1 class="text-center my-5">회원가입</h1>
 
+<div class="container" style="width: 400px;">
   <form action="" method="post" class="form">
     {% csrf_token %}
 
     {% bootstrap_form form %}
-
-    <button type="submit">제출</button>
-
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-primary" type="submit">제출</button>
+    </div>
   </form>
+</div>
 {% endblock body %}

@@ -2,10 +2,14 @@
 {% load django_bootstrap5 %}
 
 {% block body %}
-  <h1>게시글 작성</h1>
+<h1 class="text-center my-5">게시글 작성</h1>
+<div class="container" style="width: 600px">
   <form action="{% url 'articles:article_create' %}" method='POST' enctype='multipart/form-data'>
     {% csrf_token %}
     {% bootstrap_form article_form %}
-    <input class="btn btn-primary" type="submit" value="작성">
+    <div class="d-flex justify-content-end">
+      <input class="btn btn-primary" type="submit" value="작성">
+    </div>
   </form>
+</div>
 {% endblock body %}
