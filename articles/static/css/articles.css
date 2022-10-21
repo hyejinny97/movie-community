@@ -3,12 +3,15 @@
   font-size: 0.75rem;
   color: gray;
 }
+
 .index-card-link img {
   transition: all 0.2s linear;
 }
+
 .index-card-link:hover img {
   transform: scale(1.1);
 }
+
 .index-card-link {
   width: 100%;
   margin: 0px auto;
@@ -20,8 +23,9 @@
 .detail-title-div {
   position: relative;
 }
+
 .detail-title {
   position: absolute;
-  left: 2rem;
+  left: 30%;
   bottom: 1rem;
 }
