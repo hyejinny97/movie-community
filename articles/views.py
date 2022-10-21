@@ -3,7 +3,18 @@ from .models import Article
 from .forms import ArticleForm
 
 # Create your views here.
+
+# 게시글 목록 조회
+def index(request):
+    articles = Article.objects.all()
+    context = {
+        'articles':articles
+    }
+    return render(request,'articles/index.html',context)
+
 # 게시글 작성 페이지 및 게시글 데이터 생성
+
+
 def article_create(request):
     if request.method == 'POST':
         article_form = ArticleForm(request.POST, request.FILES)
@@ -30,3 +41,24 @@ def detail(request, article_pk):
     }
 
     return render(request, 'articles/detail.html', context)
+
+def update(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    print(article.title)
+    if request.method =='POST':
+        form = ArticleForm(request.POST, request.FILES ,instance=article)
+        if form.is_valid():
+            form.save()
+            return redirect('articles:detail', article.pk)
+    else:
+        form = ArticleForm(instance=article)
+    context = {
+        'form':form
+    }
+    return render(request, 'articles/update.html',context)
+
+def delete(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    article.delete()
+    return redirect('articles:index')
+

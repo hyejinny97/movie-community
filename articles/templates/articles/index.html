@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block body %}
+  <h1>리뷰 목록 조회</h1>
+  {% for article in articles %}
+    {{ article.movie_name }}
+    {{ article.title }}
+  {% endfor %}
+
+  <a href="{% url 'articles:article_create' %}">생성</a>
+{% endblock body %}
