@@ -3,6 +3,16 @@
 {% block body %}
   <h1>게시글</h1>
   {{ article.title }}
-  <img src="{{ article.image.url }}" alt="">
-  <img src="{{ article.thumbnail.url }}" alt="">
+  {% if article.image %}
+    <img src="{{ article.image.url }}" alt="">
+  {% endif %}
+  {% if article.thumbnail %}
+    <img src="{{ article.thumbnail.url }}" alt="">
+  {% endif %}
+
+  <form action="{% url 'articles:delete' article.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="삭제">
+  </form>
+
 {% endblock body %}
