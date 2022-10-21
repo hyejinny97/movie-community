@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <h1>게시글</h1>
+  {{ article.title }}
+  <img src="{{ article.image.url }}" alt="">
+  <img src="{{ article.thumbnail.url }}" alt="">
+{% endblock body %}
