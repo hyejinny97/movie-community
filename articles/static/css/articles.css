@@ -25,7 +25,10 @@
 }
 
 .detail-title {
+  height: 55px;
   position: absolute;
-  left: 30%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
   bottom: 1rem;
 }
